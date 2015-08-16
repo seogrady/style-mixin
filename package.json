@@ -1,0 +1,29 @@
+{
+  "name": "style-mixin",
+  "version": "1.0.0",
+  "description": "Inline style mixins for JavaScript",
+  "main": "index.js",
+  "author": "Shane O'Grady",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seogrady/style-mixin.git"
+  },
+  "scripts": {
+    "build": "./node_modules/.bin/babel ./src --stage 0 --out-dir ./",
+    "test": "mocha tests/*.js"
+  },
+  "keywords": [
+    "react",
+    "css",
+    "inline",
+    "inline-css",
+    "inline-style",
+    "util",
+    "utility"
+  ],
+  "devDependencies": {
+    "babel": "^5.8.21",
+    "mocha": "^2.1.0"
+  }
+}

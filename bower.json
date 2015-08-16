@@ -1,0 +1,32 @@
+{
+  "name": "style-mixin",
+  "version": "1.0.0",
+  "description": "Inline style mixins for JavaScript",
+  "main": "index.js",
+  "author": "Shane O'Grady",
+  "license": "MIT",
+  "authors": [
+    "Shane O'Grady"
+  ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "react",
+    "css",
+    "inline",
+    "inline-css",
+    "inline-style",
+    "util",
+    "utility"
+  ],
+  "ignore": [
+    ".gitignore",
+    "package.json",
+    "node_modules",
+    "tests",
+    "src"
+  ]
+}
