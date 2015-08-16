@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>StyleMixin by seogrady</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">StyleMixin</h1>
+      <h2 class="project-tagline">Style mixins for JavasScript</h2>
+      <a href="https://github.com/seogrady/style-mixin" class="btn">View on GitHub</a>
+      <a href="https://github.com/seogrady/style-mixin/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/seogrady/style-mixin/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="stylemixin" class="anchor" href="#stylemixin" aria-hidden="true"><span class="octicon octicon-link"></span></a>StyleMixin</h1>
+
+<p>Inline style mixins for JavaScript. Ideally used with ReactJS <a href="https://facebook.github.io/react/tips/inline-styles.html">inline styles</a></p>
+
+<p>Install with npm or Bower.</p>
+
+<div class="highlight highlight-sh"><pre>npm install style-mixin</pre></div>
+
+<p>Use with node.js, browserify or webpack. Alternatively, you can simply include <code>index.js</code> on your page with a standalone <code>&lt;script&gt;</code> tag and it will export a global <code>styleMixin</code> method, or define the module if you are using RequireJS.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">var</span> s <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>style-mixin/mixins<span class="pl-pds">'</span></span>),
+    m <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>style-mixin<span class="pl-pds">'</span></span>)(s);
+
+<span class="pl-k">var</span> styles <span class="pl-k">=</span> <span class="pl-c1">m</span>({
+  background<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>blue<span class="pl-pds">'</span></span>,
+  $borderRadius<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>3px<span class="pl-pds">'</span></span>
+}); <span class="pl-c">// =&gt; {background: "blue", WebkitBorderRadius: "3px", borderRadius: "3px", backgroundClip: "padding-box"}</span></pre></div>
+
+<p>The utility helper comes with a few mixins that can be included via <code>require('style-mixin/mixins')</code>.  Please have a look at <a href="src/mixins.js">src/mixins.js</a> for examples of mixin functions. Please feel free to contribute by converting existing less/sass mixins over to JavaScript.</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>The <code>m</code> function gets initialized by passing a collection of mixins to <code>mixin</code>.  The <code>m</code> function takes any number of arguments which can be a string or object. The argument <code>'$mixin'</code> is short for <code>{ $mixin: null }</code>. Keys that start with <code>$</code> will resolve a corresponding mixin.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">import</span> mixin <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>style-mixin<span class="pl-pds">'</span></span>;
+
+<span class="pl-k">let</span> m <span class="pl-k">=</span> <span class="pl-c1">mixin</span>({
+  <span class="pl-en">borderRadius</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">$radius</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>3px<span class="pl-pds">'</span></span>) {
+    <span class="pl-k">return</span> {
+      WebkitBorderRadius<span class="pl-k">:</span> $radius,
+      borderRadius<span class="pl-k">:</span> $radius,
+      backgroundClip<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>padding-box<span class="pl-pds">'</span></span> <span class="pl-c">/* stops bg color from leaking outside the border: */</span>
+    }
+  }
+});
+
+<span class="pl-k">var</span> styles <span class="pl-k">=</span> <span class="pl-c1">m</span>({
+  background<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>red<span class="pl-pds">'</span></span>
+}, <span class="pl-s"><span class="pl-pds">'</span>$borderRadius<span class="pl-pds">'</span></span>); <span class="pl-c">// =&gt; {background: "red", WebkitBorderRadius: "3px", borderRadius: "3px", backgroundClip: "padding-box"}</span></pre></div>
+
+<p>Style properties will be overridden from right to left.  If you pass in a mixin name or style object, the last object properties will take precendence.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">import</span> mixin <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>style-mixin<span class="pl-pds">'</span></span>;
+<span class="pl-k">import</span> mixins <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>style-mixin/mixins<span class="pl-pds">'</span></span>;
+
+<span class="pl-c1">Object</span>.<span class="pl-c1">assign</span>(mixins, {
+  <span class="pl-en">button</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">$fontsize</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>12px<span class="pl-pds">'</span></span>) {
+    <span class="pl-k">return</span> {
+      fontSize<span class="pl-k">:</span> $fontsize,
+      color<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>white<span class="pl-pds">'</span></span>,
+      background<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>blue<span class="pl-pds">'</span></span>,
+      $borderRadius<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>3px<span class="pl-pds">'</span></span>
+    }
+  }
+});
+
+<span class="pl-k">let</span> m <span class="pl-k">=</span> <span class="pl-c1">mixin</span>(mixins);
+
+<span class="pl-k">var</span> styles <span class="pl-k">=</span> <span class="pl-c1">m</span>(<span class="pl-s"><span class="pl-pds">'</span>$button<span class="pl-pds">'</span></span>, { background<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>red<span class="pl-pds">'</span></span> }); <span class="pl-c">// =&gt; {background: "red", fontSize: "12px", color: "white", WebkitBorderRadius: "3px", borderRadius: "3px", backgroundClip: "padding-box"}</span></pre></div>
+
+<p>If you pass an array of properties to a mixin function they will passed as arguments.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c1">Object</span>.<span class="pl-c1">assign</span>(mixins, {
+  <span class="pl-en">absPos</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">$top</span> <span class="pl-k">=</span> <span class="pl-c1">0</span>, <span class="pl-smi">$right</span> <span class="pl-k">=</span> <span class="pl-c1">0</span>, <span class="pl-smi">$bottom</span> <span class="pl-k">=</span> <span class="pl-c1">0</span>, <span class="pl-smi">$left</span> <span class="pl-k">=</span> <span class="pl-c1">0</span>) {
+    <span class="pl-k">return</span> {
+      top<span class="pl-k">:</span> $top,
+      right<span class="pl-k">:</span> $right,
+      bottom<span class="pl-k">:</span> $bottom,
+      left<span class="pl-k">:</span> $left,
+      position<span class="pl-k">:</span> absolute
+    }
+  }
+});
+
+<span class="pl-k">let</span> m <span class="pl-k">=</span> <span class="pl-c1">mixin</span>(mixins);
+
+<span class="pl-k">var</span> styles <span class="pl-k">=</span> <span class="pl-c1">m</span>({
+  background<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>red<span class="pl-pds">'</span></span>,
+  $absPos<span class="pl-k">:</span>[<span class="pl-s"><span class="pl-pds">'</span>23px<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>43px<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>3px<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>-33px<span class="pl-pds">'</span></span>]
+}); <span class="pl-c">// =&gt; {background: "red", top: "23px", right: "43px", bottom: "3px", left: "-33px", position: "absolute"}</span></pre></div>
+
+<h2>
+<a id="polyfills-needed-to-support-older-browsers" class="anchor" href="#polyfills-needed-to-support-older-browsers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Polyfills needed to support older browsers</h2>
+
+<p><code>Object.assign</code>: see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign">MDN</a></p>
+
+<p><code>Array.isArray</code>: see <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray">MDN</a></p>
+
+<h2>
+<a id="contribute" class="anchor" href="#contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contribute</h2>
+
+<p>Would you like to take part of the discussion? Open up an issue or pull request.</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p><a href="LICENSE">MIT</a></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/seogrady/style-mixin">StyleMixin</a> is maintained by <a href="https://github.com/seogrady">seogrady</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-24356782-6");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
