@@ -1,6 +1,6 @@
 {
   "name": "style-mixin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Inline style mixins for JavaScript",
   "main": "index.js",
   "author": "Shane O'Grady",
