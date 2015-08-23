@@ -83,8 +83,7 @@ function lineHeight() {
 
 function inlineBlock() {
   return {
-    display: '-moz-inline-stack',
-    display: 'inline-block',
+    display: 'inline-block; display:-moz-inline-stack',
     verticalAlign: 'top',
     zoom: 1,
     '*display': 'inline'
